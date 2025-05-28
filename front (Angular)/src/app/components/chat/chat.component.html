@@ -1,0 +1,159 @@
+<div class="chat-container">
+
+
+  <div #messageWrapper [scrollTop]="messageWrapper.scrollHeight" (click)="closeContextMenu()" class="messages">
+    @if (messages) {
+      @for (message of messages; track $index) {
+
+        <div style="position: relative">
+
+
+          @if (message.sender_id !== currentUser?.id) {
+            <img [ngClass]="messageHeights[$index] > 60 ? 'smallAlign' : ''" class="beak"
+                 src="assets/images/shared/beak.png">
+
+            <div class="profilePictureBorder">
+              <img class="profilePicture" [src]="imageBaseUrl + message.profile_picture">
+            </div>
+
+
+            @if ($index < messages.length - 1 &&
+            messages[$index + 1]?.sender_id !== currentUser.id) {
+              <div class="connector">
+              </div>
+            }
+
+
+            @if (message.content.endsWith('?')) {
+              <img class="question" src="assets/images/shared/question.png">
+            }
+
+            @if (message.content.endsWith('!')){
+              <img class="exclamation" src="assets/images/shared/exclamination.png">
+            }
+
+
+          }
+
+          @if (menu.index === $index) {
+            <div
+
+              class="menu"
+              (click)="$event.stopPropagation()"
+            >
+              <div class="controls">
+                <div (click)="startEditing(message.id, message.content)" class="hover-item"
+                     style="display: flex;flex-direction: column;">
+                  <button
+                    type="submit"
+                    class="register-button mainMenuButtonFont">edit
+                  </button>
+                  <div style="top: -35px; left: 0px;opacity: 50%;" class="shape-wrapper">
+                    <div style="height: 50px;opacity: 100%;" class="shape red-fill jelly">
+                      <svg x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+                        <polygon fill="blue" points="20,0 100,0 80,50 40,50"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                <div (click)="deleteMessage(message.id)" class="hover-item"
+                     style="display: flex;flex-direction: column;">
+                  <button
+                    type="submit"
+                    class="register-button mainMenuButtonFont">delete
+                  </button>
+                  <div style="top: -35px; left: 0px;opacity: 50%;" class="shape-wrapper">
+                    <div style="height: 50px;opacity: 100%;" class="shape red-fill jelly">
+                      <svg x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+                        <polygon fill="red" points="20,0 100,0 80,50 40,50"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+
+
+          <div [@messageAnimation] [ngClass]="message.sender_id === currentUser.id ? 'mineBorder' : 'otherBorder'">
+
+            <div (contextmenu)="onContextMenu($event, message, $index)"
+                 [ngClass]="message.sender_id === currentUser.id ? 'mine' : 'otherUser'" class="message">
+
+              <div #contentRef class="content">
+                {{ message.content }}
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      }
+      @if (typingUsers.size > 0) {
+        <div [@messageAnimation] class="typing-indicator">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      }
+    }
+  </div>
+
+  <div class="chatForm">
+    <form [formGroup]="messageForm" (ngSubmit)="sendMessage()" class="message-form">
+    <textarea
+      (input)="notifyTyping()"
+      formControlName="content"
+      placeholder="write a message..."
+      maxlength="60"
+    ></textarea>
+
+      @if (!editing) {
+        <div [ngStyle]="messageForm.invalid ? {'pointer-events': 'none'} : {}"
+             style="display: flex;justify-content: center">
+          <div (click)="sendMessage()" class="hover-item" style="display: flex; flex-direction: column;">
+            <button [disabled]="messageForm.invalid" class="register-button">SeNd</button>
+            <div style="top: -35px; left: 22px" class="shape-wrapper">
+              <div style="height: 50px;" class="shape red-fill jelly">
+                <svg viewBox="0 0 120 50">
+                  <polygon fill="white" points="50 36, 0 8, 100 7"/>
+
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      } @else {
+
+        <div style="display: flex;justify-content: center;gap: 20px;margin-top: 10px">
+          <div style="display: flex;justify-content: center">
+            <div (click)="cancelEdit()" class="hover-item" style="display: flex; flex-direction: column;">
+              <button class="register-button">cancel</button>
+              <div style="top: -35px; left: 22px" class="shape-wrapper">
+                <div style="height: 50px;" class="shape red-fill jelly">
+                  <svg viewBox="0 0 120 50">
+                    <polygon fill="yellow" points="50 36, 0 8, 100 7"/>
+
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div [ngStyle]="messageForm.invalid ? {'pointer-events': 'none'} : {}"
+               style="display: flex;justify-content: center">
+            <div (click)="editMessage()" class="hover-item" style="display: flex; flex-direction: column;">
+              <button [disabled]="messageForm.invalid" class="register-button">edIT</button>
+              <div style="top: -35px; left: 22px" class="shape-wrapper">
+                <div style="height: 50px;" class="shape red-fill jelly">
+                  <svg viewBox="0 0 120 50">
+                    <polygon fill="lightblue" points="50 36, 0 8, 100 7"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </form>
+  </div>
+</div>

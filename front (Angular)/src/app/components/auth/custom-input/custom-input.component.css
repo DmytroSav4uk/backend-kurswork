@@ -1,0 +1,31 @@
+.fancy-input {
+  display: flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  padding: 8px;
+  font-size: 24px;
+  font-family: monospace;
+  border: 1px solid #ccc;
+  outline: none;
+  cursor: text;
+  color: white;
+  min-height: 36px;
+}
+
+.fancy-input span {
+  position: relative;
+}
+
+.fancy-input span::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background: white;
+}
+
+.fancy-input span.last {
+  background-color: black;
+}

@@ -1,0 +1,102 @@
+@if (backImage) {
+  <img
+    class="backgroundImage"
+    [class.roll-in]="playAnimation"
+    [ngStyle]="getImageStyle()"
+    [src]="backImage"
+  />
+}
+
+
+<div class="content">
+  <div class="hover-wrapper">
+      <div (click)="showForm('login')" class="hover-item">
+        <h1>LOGIN</h1>
+        <div class="shape-wrapper">
+          <div class="shape red-fill jelly">
+            <svg x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+              <polygon fill="#FFFFFF" points="0,7.1 127.3,0 32.3,64 4.8,58.2"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div (click)="showForm('register')" class="hover-item">
+        <h1>REGISTER</h1>
+        <div class="shape-wrapper">
+          <div class="shape red-fill jelly">
+            <svg style="user-select: none" x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+              <polygon fill="#FFFFFF" points="0,7.1 127.3,0 32.3,64 4.8,58.2"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+
+
+
+  </div>
+
+
+  @if (showLogin) {
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="loginForm">
+
+      <input class="underLineInput" placeholder="email" formControlName="email">
+
+      <input class="underLineInput" type="password" placeholder="password" formControlName="password">
+
+      <div [ngStyle]="loginForm.invalid ? {'pointer-events': 'none'} : {}" (click)="login()" class="hover-item"
+           style="display: flex;flex-direction: column;">
+        <button [disabled]="loginForm.invalid" type="submit" class="register-button mainMenuButtonFont">loGin</button>
+        <div style="top: -35px; left: 180px" class="shape-wrapper">
+          <div style="height: 50px" class="shape red-fill jellySmaller">
+            <svg x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+              <polygon fill="#FFFFFF" points="20,0 100,0 80,50 40,50"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </form>
+  }
+
+  @if (showRegister) {
+    <form [formGroup]="form" (ngSubmit)="register()" class="register">
+
+      <input class="underLineInput" placeholder="username" formControlName="username">
+
+      <input class="underLineInput" placeholder="email" type="email" formControlName="email"/>
+
+      <input class="underLineInput" placeholder="password" type="password" formControlName="password"/>
+
+      <div [ngStyle]="form.invalid ? {'pointer-events': 'none'} : {}" (click)="register()" class="hover-item"
+           style="display: flex;flex-direction: column;">
+        <button [disabled]="form.invalid" type="submit" class="register-button">rEgister</button>
+        <div style="top: -35px; left: 180px" class="shape-wrapper">
+          <div style="height: 50px" class="shape red-fill jellySmaller">
+            <svg x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+              <polygon fill="#FFFFFF" points="20,0 100,0 80,50 40,50"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+
+
+      @if (success) {
+
+        <p class="success">registration successful!<br/> please proceed to login</p>
+
+      }
+
+      @if (error === 'already exists') {
+
+        <p style="color: red" class="success">ERROR! <br/> USER ALREADY EXISTS</p>
+      }
+
+
+    </form>
+
+  }
+
+</div>
+

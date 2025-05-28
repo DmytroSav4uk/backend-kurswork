@@ -1,0 +1,315 @@
+@if (posts) {
+  <div class="postPage">
+
+    <div (click)="return()" class="returnButton">
+      <img (click)="return()" src="assets/images/shared/goBack.png">
+      <p (click)="return()">return</p>
+    </div>
+
+    <div class="createPost">
+      <form class="createPostForm" [formGroup]="postForm" (ngSubmit)="createPost()" enctype="multipart/form-data">
+
+        <div style="position: relative">
+          <div class="textareaBorder">
+            <textarea formControlName="content" placeholder="share your thoughts..."></textarea>
+          </div>
+
+          <div style="display: flex;flex-direction: column;align-items: center;justify-content: center;position: absolute;bottom: 10px;
+  left: 260px;
+">
+            <label class="upload-label">
+              <input type="file" accept="image/*,video/*" (change)="onFileSelected($event)" hidden/>
+              <img src="assets/images/shared/add.png" class="upload-icon"/>
+            </label>
+
+            <label style="color: white;font-family: 'paragraphFont', sans-serif;text-align: center">upload file</label>
+          </div>
+        </div>
+
+
+        <div [ngStyle]="postForm.invalid ? {'pointer-events': 'none'} : {}" (click)="createPost()" class="hover-item"
+             style="display: flex;flex-direction: column;margin-top: 20px;position: relative;bottom: 80px">
+          <button [disabled]="postForm.invalid" type="submit" class="register-button mainMenuButtonFont">publish
+          </button>
+          <div style="top: -35px;" class="shape-wrapper">
+            <div style="height: 50px" class="shape red-fill jelly">
+              <svg x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+                <polygon fill="#FFFFFF" points="20,0 100,0 80,50 40,50"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+
+        <!--      <button type="submit" [disabled]="postForm.invalid">Опублікувати</button>-->
+
+      </form>
+    </div>
+
+    @if (posts) {
+
+
+      <div class="posts" style="color: white">
+
+        @for (post of posts; track $index) {
+          @if (post) {
+            <div class="publisher">
+
+              <div class="profile-picture-post">
+                <img
+
+                  (click)="showUserProfile(post.user_id)"
+
+                  [appLazyImg]="imageBaseUrl + post.profile_picture"
+                  [placeholder]="'assets/images/shared/loading.gif'"
+                  [fallback]="'assets/images/shared/loading.gif'"
+                  alt="Фото профілю"
+                />
+              </div>
+
+
+              <div style="display: flex;align-items: center;justify-content: space-between">
+                <p>{{ post.username }}</p>
+
+
+                @if (currentUser.id === post.user_id) {
+                  <p class="clickSound" (click)="showDeleteButton(post.id)"
+                     style="user-select: none;padding-bottom: 10px;margin-right: 20px; cursor: pointer">...</p>
+
+                  @if (selectedPostId === post.id) {
+
+                    <div (click)="deletePost(post.id)" class="hover-item"
+                         style="top: 42px;right: -80px;position: absolute;display: flex;flex-direction: column;">
+                      <button style="background: white;border-radius:20px ;color: black;border: 2px solid black;"
+                              type="submit"
+                              class="register-button mainMenuButtonFont">delete
+                      </button>
+                      <div style="top: -35px; left: 0px;opacity: 100%;mix-blend-mode: difference" class="shape-wrapper">
+                        <div style="height: 50px;opacity: 100%" class="shape red-fill jelly">
+                          <svg x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+                            <polygon fill="white" points="20,0 100,0 80,50 40,50"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                }  </div>
+            </div>
+          }
+          <div class="postBorder">
+            <div class="post">
+
+
+              <div class="content">
+
+
+                @if (post.image) {
+                  @if (isImage(post.image)) {
+                    <img
+                      [appLazyImg]="imageBaseUrl + post.image"
+                      [placeholder]="'assets/images/shared/loading.gif'"
+                      [fallback]="'assets/images/shared/loading.gif'"
+                    >
+                  } @else {
+                    <video controls [src]="imageBaseUrl + post.image" width="50%"></video>
+                  }
+                } @else {
+
+                }
+
+                <p>{{ post.content }}</p>
+              </div>
+
+              <hr style="color: white;width: 100%;opacity: 1"/>
+
+
+              <div style="display: flex;justify-content: center;padding: 10px">
+                <div (click)="getComments(post.id)" style="width: 50px;height: 50px;cursor: pointer" class="clickSound">
+                  <img class="clickSound" style="user-select: none;width: 100%;height: 100%;border-radius: 5px"
+                       src="assets/images/shared/comments.png"/>
+                </div>
+              </div>
+
+
+              @if (whereShowComments === post.id) {
+                <div class="comments">
+
+                  <form #commentForm="ngForm" class="commentsForm">
+
+                <textarea name="comment"
+                          [(ngModel)]="commentText"
+                          placeholder="comment..." required
+                ></textarea>
+
+                    @if (!editingComment) {
+                      <div (click)="submitComment(post.id)" class="hover-item"
+                           style="width: 20%;display: flex;flex-direction: column;">
+                        <button
+                          type="submit"
+                          class="register-button mainMenuButtonFont">submit
+                        </button>
+                        <div style=";top: -35px; left: 0px;opacity: 100%;mix-blend-mode: difference"
+                             class="shape-wrapper">
+                          <div style="height: 50px;opacity: 100%" class="shape red-fill jelly">
+                            <svg x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+                              <polygon style="opacity: 50%" fill="red" points="20,0 100,0 80,50 40,50"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    } @else {
+                      <div style="display: flex;width: 100%;justify-content: center;margin-top: 5px">
+                        <div (click)="cancelCommentEdit()" class="hover-item"
+                             style="width: 20%;display: flex;flex-direction: column;">
+                          <button
+                            type="submit"
+                            class="register-button mainMenuButtonFont">cancel
+                          </button>
+                          <div style=";top: -35px; left: 0px;opacity: 100%;mix-blend-mode: difference"
+                               class="shape-wrapper">
+                            <div style="height: 50px;opacity: 100%" class="shape red-fill jelly">
+                              <svg x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+                                <polygon style="opacity: 50%" fill="red" points="10,0 100,0 50,50 40,50"/>
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                        <div (click)="submitCommentEdit(post.id)" class="hover-item"
+                             style="width: 20%;display: flex;flex-direction: column;">
+                          <button
+                            type="submit"
+                            class="register-button mainMenuButtonFont">update
+                          </button>
+                          <div style=";top: -35px; left: 0px;opacity: 100%;mix-blend-mode: difference"
+                               class="shape-wrapper">
+                            <div style="height: 50px;opacity: 100%" class="shape red-fill jelly">
+                              <svg x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+                                <polygon style="opacity: 50%" fill="blue" points="20,0 100,0 80,50 40,50"/>
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    }
+
+
+                  </form>
+
+                  <div class="commentsFather">
+
+
+                    @for (comment of comments; track $index) {
+
+
+                      <div #commentBlock (contextmenu)="onRightClick($event, comment)" class="comment">
+
+                        @if (comment.showControls) {
+
+                          <div class="controls">
+                            <div (click)="startEditing(comment)" class="hover-item"
+                                 style="display: flex;flex-direction: column;">
+                              <button
+                                type="submit"
+                                class="register-button mainMenuButtonFont">edit
+                              </button>
+                              <div style="top: -35px; left: 0px;opacity: 50%;" class="shape-wrapper">
+                                <div style="height: 50px;opacity: 100%;" class="shape red-fill jelly">
+                                  <svg x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+                                    <polygon fill="blue" points="20,0 100,0 80,50 40,50"/>
+                                  </svg>
+                                </div>
+                              </div>
+                            </div>
+                            <div (click)="deleteComment(post.id, comment.id)" class="hover-item"
+                                 style="display: flex;flex-direction: column;">
+                              <button
+                                type="submit"
+                                class="register-button mainMenuButtonFont">delete
+                              </button>
+                              <div style="top: -35px; left: 0px;opacity: 50%;" class="shape-wrapper">
+                                <div style="height: 50px;opacity: 100%;" class="shape red-fill jelly">
+                                  <svg x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+                                    <polygon fill="red" points="20,0 100,0 80,50 40,50"/>
+                                  </svg>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        }
+
+                        <div class="commentor">
+                          <img
+                            (click)="showUserProfile(comment.user_id)"
+                            [appLazyImg]="imageBaseUrl + comment.user.profile_picture"
+                            [placeholder]="'assets/images/shared/loading.gif'"
+                            [fallback]="'assets/images/shared/loading.gif'"
+
+                          >
+                        </div>
+
+                        <div>
+                          <img class="beak" src="assets/images/shared/beak.png">
+                        </div>
+
+
+                        <div class="nick-border"
+                             [ngClass]="{ 'long-username-border': comment.user.username.length >= 10 }">
+                          <div class="nick"
+                               [ngClass]="{ 'long-username': comment.user.username.length >= 10 }">
+                            <h1>{{ comment.user.username }}</h1>
+                          </div>
+                        </div>
+
+
+                        <div class="commentContentBorder">
+                          <div class="commentContent">
+                            {{ comment.content }}
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                    }
+                  </div>
+
+                </div>
+              }
+
+            </div>
+          </div>
+
+          <div class="connector">
+
+            <div class="conEl1"></div>
+
+
+            <div class="conEl2"></div>
+
+
+          </div>
+
+        }
+      </div>
+
+
+    }
+  </div>
+
+} @else {
+
+  <div class="loading">
+    <img src="assets/images/shared/loading.gif">
+  </div>
+
+}
+
+
+@if (showProfile) {
+  <div class="user-profile">
+    <app-profile-by-id [id]="idOfProfile" [showProfile]="showProfile"  (close)="closeProfile()" >
+    </app-profile-by-id>
+  </div>
+
+}

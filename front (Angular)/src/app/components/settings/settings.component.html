@@ -1,0 +1,69 @@
+<div #wrapper class="page-wrapper">
+
+
+  <img class="backgroundImage" src="/assets/images/backGrounds/54obu7eenrq61.gif" [@fadeInOut]/>
+  <img class="backgroundImage slide" src="/assets/images/blackBack/configBack.png"/>
+
+  <div class="content" [@fadeInOut]>
+
+    <div class="hover-wrapper">
+      <div (click)="navigateTo('main')" class="hover-item">
+        <h1>EXIT</h1>
+        <div style="position: unset" class="shape-wrapper">
+          <div style="top: 5px;width: 400px" class="shape red-fill jelly">
+            <svg style="width: 200px" x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+              <polygon fill="#FFFFFF" points="50,0 100,38 81,100 19,100 0,38"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="checkbox-wrapper-8">
+        <label class="textLabel" for="cb3-8">sound</label>
+        <input
+          class="tgl tgl-skewed"
+          id="cb3-8"
+          type="checkbox"
+          [checked]="isMusicEnabled"
+          (change)="onToggleMusic($event)"
+        />
+        <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="cb3-8"></label>
+      </div>
+
+
+      <div  class="select-wrapper">
+
+        <label class="textLabel" for="track-list">track</label>
+        <div  class="select"
+              id="track-list"
+              tabindex="0"
+              role="radiogroup"
+              aria-labelledby="track-list">
+
+
+          @for (t of tracks; track $index){
+            <input  type="radio"
+                    class="selectopt"
+                    name="track"
+                    [id]="'opt' + $index"
+                    [value]="t.src"
+                    [(ngModel)]="selectedTrackSrc"
+                    (change)="onTrackChange(t.src)">
+
+
+            <label  class="option"
+                    [for]="'opt' + $index"
+                    [class.selected]="selectedTrackSrc === t.src">
+              {{ t.label }}
+            </label>
+          }
+
+      </div>
+
+    </div>
+
+
+  </div>
+  </div>
+</div>

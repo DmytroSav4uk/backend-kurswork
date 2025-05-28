@@ -1,0 +1,85 @@
+<div style=";background: rgba(0,0,0,0.85)" class="profileFather">
+
+
+  @if (user) {
+    <div class="controls">
+      <img class="clickSound" (click)="closeProfile()" src="assets/images/shared/X.png">
+
+    </div>
+
+    @if (currentUser){
+      @if (user.id !== currentUser.id && !isAlreadyFriend(user.id)) {
+        <div class="saveButtonFather">
+
+          <div (click)="sendFriendRequest(user.id)"  class="hover-item"
+               style="display: flex;flex-direction: column;">
+            <button type="submit" class="register-button mainMenuButtonFont">Offer friendship</button>
+            <div style="top: -35px; left: 0px" class="shape-wrapper">
+              <div style="height: 50px" class="shape red-fill jelly">
+                <svg x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+                  <polygon fill="violet" points="20,0 100,0 80,50 40,50"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    }
+
+    <div class="profileImage">
+      <div class="imageWrapper">
+
+        <img
+          [src]="user.profile_picture ? imgUrl + user.profile_picture : 'assets/images/shared/logo.png'">
+
+      </div>
+
+      <p #usernameEl>{{ user.username }}</p>
+    </div>
+
+    <div class="fullName">
+      <p #firstNameEl>
+        @if (user.full_name) {
+          {{ splitFullName(user.full_name).firstName }}
+        } @else {
+          Phantom
+        }
+
+      </p>
+      <p #lastNameEl>
+
+        @if (user.full_name) {
+          {{ splitFullName(user.full_name).lastName }}
+        } @else {
+          Thief
+        }
+
+
+      </p>
+    </div>
+
+    <div class="bio">
+      <img src="/assets/images/mainPage/profile.png">
+      <h1>
+        <span style="color: white; font-size: 65px">B</span>
+        <span style="color: black">IO</span>
+      </h1>
+      <div class="bioText">
+        <p #bioEl style="color: black; font-family: 'paragraphFont', sans-serif">
+
+          @if (user.bio) {
+            {{ user.bio }}
+          } @else {
+            bio...
+          }
+
+        </p>
+      </div>
+    </div>
+
+  } @else {
+    <div class="loading">
+      <h1 style="width: 877px;text-align: center;font-family: loaFont, sans-serif; font-size: 60px">Take Your Time</h1>
+    </div>
+  }
+</div>

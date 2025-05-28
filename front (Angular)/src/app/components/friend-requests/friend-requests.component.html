@@ -1,0 +1,83 @@
+<div class="friendsContent">
+  <h1>FRIENDS</h1>
+  <div class="accepted">
+    @for (friend of acceptedFriends; track $index) {
+      <div style="padding-left: 100px;width: 80%;display: flex;justify-content: space-between" class="element">
+        <div class="pending-flex">
+          <div class="imageWrapper">
+            <img
+              [src]="friend.profile_picture ? imgUrl + friend.profile_picture : 'assets/images/shared/logo.png'">
+          </div>
+          <p>{{ friend.username }}</p>
+        </div>
+
+        <div class="buttons-flex">
+          <div (click)="goToChat(friend.id)" class="hover-item" style="display: flex; flex-direction: column;">
+            <button  class="register-button">Chat</button>
+            <div style="top: -35px; left: 22px" class="shape-wrapper">
+              <div style="height: 50px;" class="shape red-fill jelly">
+                <svg viewBox="0 0 120 50">
+                  <polygon fill="white" points="90, 48, 0, 27, 88, 0" />
+
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    }
+  </div>
+
+  <div class="pending">
+    <h1>Pending requests</h1>
+
+    @if (pendingFriends.length > 0){
+      @for (friend of pendingFriends; track $index) {
+
+        <div class="element">
+          <div class="pending-flex">
+            <div class="imageWrapper">
+              <img
+                [src]="friend.profile_picture ? imgUrl + friend.profile_picture : 'assets/images/shared/logo.png'">
+            </div>
+            <p>{{ friend.username }}</p>
+          </div>
+
+          <div class="buttons-flex">
+            <div (click)="acceptFriend(friend.id)" class="hover-item" style="display: flex; flex-direction: column;">
+              <button style="-webkit-text-stroke: 1px rgba(173,255,47,0.3);" class="register-button">Accept</button>
+              <div style="top: -35px; left: 22px" class="shape-wrapper">
+                <div style="height: 50px;" class="shape red-fill jelly">
+                  <svg viewBox="0 0 120 50">
+                    <polygon fill="white" points="0,0 90,0 70,40 30,50"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="hover-item" style="display: flex; flex-direction: column;">
+              <button style="-webkit-text-stroke: 1px rgba(255,0,0,0.53);" class="register-button">Reject</button>
+              <div style="top: -35px; left: 22px" class="shape-wrapper">
+                <div style="height: 50px;" class="shape red-fill jelly">
+                  <svg viewBox="0 0 120 50">
+                    <polygon fill="white" points="0,0 90,0 70,40 30,50"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+
+      }
+    } @else {
+      <h1 style="margin: 0">No Pending Requests</h1>
+    }
+
+
+  </div>
+
+</div>

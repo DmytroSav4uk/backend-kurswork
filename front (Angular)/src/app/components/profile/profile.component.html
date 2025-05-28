@@ -1,0 +1,131 @@
+<div class="profileFather">
+
+
+  @if (user) {
+    <div class="controls">
+      <img class="clickSound" (click)="closeProfile()" src="assets/images/shared/X.png">
+      <img class="clickSound" (click)="toggleEdit()" src="assets/images/shared/edit.png">
+    </div>
+
+    <div class="profileImage">
+      <div class="imageWrapper" (click)="triggerFileInput()">
+        <!-- Display the profile picture or fallback image -->
+        <img
+          [src]="croppedImage || user.profile_picture ? imgUrl + user.profile_picture : 'assets/images/shared/logo.png'">
+        <div class="uploadText">Upload Image</div>
+      </div>
+
+      <!-- Hidden file input -->
+      <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)">
+
+      <p [contentEditable]="editing" #usernameEl>{{ user.username }}</p>
+    </div>
+
+    @if (showCropper) {
+      <div class="cropperModal">
+        <image-cropper
+          [imageChangedEvent]="imageChangedEvent"
+          [maintainAspectRatio]="true"
+          [aspectRatio]="1"
+          [resizeToWidth]="200"
+          [resizeToHeight]="200"
+          format="png"
+          (imageCropped)="imageCropped($event)"
+        >
+        </image-cropper>
+
+
+        <div (click)="uploadCroppedImage()" class="hover-item"
+             style="display: flex;flex-direction: column;">
+          <button type="submit" class="register-button mainMenuButtonFont">Save</button>
+          <div style="top: -35px; left: 0px" class="shape-wrapper">
+            <div style="height: 50px" class="shape red-fill jelly">
+              <svg x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+                <polygon fill="#FFFFFF" points="20,0 100,0 80,50 40,50"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div (click)="cancelCrop()" class="hover-item"
+             style="display: flex;flex-direction: column;">
+          <button type="submit" class="register-button mainMenuButtonFont">Cancel</button>
+          <div style="top: -35px; left: 0px" class="shape-wrapper">
+            <div style="height: 50px" class="shape red-fill jelly">
+              <svg x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+                <polygon fill="#FFFFFF" points="20,0 100,0 80,50 40,50"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    }
+
+
+
+
+    <div class="fullName">
+      <p [contentEditable]="editing" #firstNameEl>
+        @if (user.full_name) {
+          {{ splitFullName(user.full_name).firstName }}
+        } @else {
+          Phantom
+        }
+
+      </p>
+      <p [contentEditable]="editing" #lastNameEl>
+
+        @if (user.full_name) {
+          {{ splitFullName(user.full_name).lastName }}
+        } @else {
+          Thief
+        }
+
+
+      </p>
+    </div>
+
+    <div class="bio">
+      <img src="/assets/images/mainPage/profile.png">
+      <h1>
+        <span style="color: white; font-size: 65px">B</span>
+        <span style="color: black">IO</span>
+      </h1>
+      <div class="bioText">
+        <p [contentEditable]="editing" #bioEl style="color: black; font-family: 'paragraphFont', sans-serif">
+
+          @if (user.bio) {
+            {{ user.bio }}
+          } @else {
+            bio...
+          }
+
+        </p>
+      </div>
+    </div>
+
+
+    @if (editing) {
+      <div class="saveButtonFather">
+
+        <div (click)="saveChanges()" class="hover-item"
+             style="display: flex;flex-direction: column;">
+          <button type="submit" class="register-button mainMenuButtonFont">Save</button>
+          <div style="top: -35px; left: 0px" class="shape-wrapper">
+            <div style="height: 50px" class="shape red-fill jelly">
+              <svg x="0px" y="0px" viewBox="0 0 108.1 47" enable-background="new 0 0 108.1 47">
+                <polygon fill="#FFFFFF" points="20,0 100,0 80,50 40,50"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  } @else {
+    <div class="loading">
+      <h1 style="width: 877px;text-align: center;font-family: loaFont, sans-serif; font-size: 60px">Take Your Time</h1>
+    </div>
+  }
+</div>

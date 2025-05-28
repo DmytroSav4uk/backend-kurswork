@@ -1,0 +1,21 @@
+<img class="navBackGround" src="/assets/images/blackBack/buttonsField.png">
+
+
+<img (click)="goBack()" class="goBackButton" src="/assets/images/shared/goBack.png">
+
+
+
+<div class="navFather">
+  @for (friend of friends; track $index) {
+    <div (click)="navigateToChat(friend.id)" class="hover-item" style="display: flex; flex-direction: column;">
+      <button class="register-button">{{ friend.username | truncate:10 }}</button>
+      <div style="top: -35px; left: 22px" class="shape-wrapper">
+        <div style="height: 50px;" class="shape red-fill jelly">
+          <svg viewBox="0 0 120 50">
+            <polygon fill="blue" points="0,0 90,0 70,40 30,50"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  }
+</div>
