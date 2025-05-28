@@ -20,3 +20,7 @@
 Прев'ю сторінок додатку
 
 ![Alt text](media/auth.PNG)
+![Alt text](media/posts.PNG)
+![Alt text](media/profile.PNG)
+![Alt text](media/settings.PNG)
+![Alt text](media/chat.gif)
